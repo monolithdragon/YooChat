@@ -14,6 +14,7 @@ import Animated, {
   withTiming,
   useDerivedValue,
 } from "react-native-reanimated";
+import { useToggle } from "@/hooks/useToggle";
 
 type SwithProps = {
   width: number;
@@ -30,7 +31,7 @@ export default function Switch({
   inactiveColor,
   onPress,
 }: SwithProps) {
-  const [active, setActive] = useState<boolean>(false);
+  const [active, setActive] = useToggle(false);
   const switchTranslate = useSharedValue(0);
 
   const styles = createstyles(width, height);
@@ -70,10 +71,6 @@ export default function Switch({
     };
   });
 
-  const toggleActive = useCallback(() => {
-    setActive((prev) => !prev);
-  }, []);
-
   useEffect(() => {
     if (active) {
       onPress?.();
@@ -81,7 +78,7 @@ export default function Switch({
   }, [active]);
 
   return (
-    <TouchableWithoutFeedback onPress={toggleActive}>
+    <TouchableWithoutFeedback onPress={setActive}>
       <Animated.View
         testID="switch-container"
         style={[styles.container, backgroundColorStyle]}
