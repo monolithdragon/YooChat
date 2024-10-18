@@ -1,11 +1,5 @@
 import { StyleSheet, TouchableWithoutFeedback } from "react-native";
-import React, {
-  useState,
-  useEffect,
-  useMemo,
-  useCallback,
-  useRef,
-} from "react";
+import React, { useEffect } from "react";
 import Animated, {
   interpolateColor,
   useSharedValue,
@@ -45,31 +39,28 @@ export default function Switch({
     return withTiming(active ? animatedValue : 0);
   });
 
-  const backgroundColorStyle = useAnimatedStyle(() => {
-    const backgroundColor = interpolateColor(
+  const backgroundColorStyle = useAnimatedStyle(() => ({
+    backgroundColor: interpolateColor(
       progress.value,
       [0, animatedValue],
       [inactiveColor, activeColor]
-    );
-    return { backgroundColor };
-  });
+    ),
+  }));
 
-  const springStyle = useAnimatedStyle(() => {
-    return {
-      transform: [
-        {
-          translateX: withSpring(switchTranslate.value, {
-            mass: 1,
-            damping: 15,
-            stiffness: 120,
-            overshootClamping: false,
-            restSpeedThreshold: 0.001,
-            restDisplacementThreshold: 0.001,
-          }),
-        },
-      ],
-    };
-  });
+  const springStyle = useAnimatedStyle(() => ({
+    transform: [
+      {
+        translateX: withSpring(switchTranslate.value, {
+          mass: 1,
+          damping: 15,
+          stiffness: 120,
+          overshootClamping: false,
+          restSpeedThreshold: 0.001,
+          restDisplacementThreshold: 0.001,
+        }),
+      },
+    ],
+  }));
 
   useEffect(() => {
     if (active) {
